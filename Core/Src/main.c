@@ -27,6 +27,8 @@
 #include <stdio.h>
 #include "usbd_cdc_if.h"
 #include <string.h>
+#include "W25Qxxx.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,6 +102,20 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
+  if( !Flash_Init())// No Flash mem fiind
+  	{
+  		while(1)
+  		{
+  			printf("Flash mem found \r\n");
+  			HAL_Delay(1000);
+
+  		}
+  	}
+  uint8_t mes[20]={0};
+  Flash_Read(0, mes, 15);
+  printf("Flash : %s \r\n",mes);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,9 +124,9 @@ int main(void)
   {
 	  static uint16_t cnt =0 ;
 	  HAL_Delay(500);
-	  printf("Print din while %d \r\n",cnt++);
-	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+	  printf("Loop Nr= %d \r\n",cnt++);
 
+	  HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 
 	  /* USER CODE END WHILE */
 
